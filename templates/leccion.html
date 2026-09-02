@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeaAprende - Lección</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="lesson-body">
+    <header class="lesson-header">
+        <a class="close-btn" href="{% url 'dashboard' %}"><i class="fa-solid fa-xmark"></i></a>
+        <div class="progress-bar-container">
+            <div class="progress-bar" style="width: {% if resultado == 'correcto' %}100{% else %}0{% endif %}%"></div>
+        </div>
+    </header>
+
+    <main class="lesson-container">
+        <h2 class="question-title">¿Mito o Verdad?</h2>
+        <p class="question-text">"{{ leccion.pregunta }}"</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="options-grid">
+                {# Iteramos las opciones del RespuestaForm (Verdad / Mito) #}
+                {% for opcion in form.respuesta %}
+                    <label class="option-card">
+                        {{ opcion.tag }}
+                        <div class="option-number">{{ forloop.counter }}</div>
+                        <div class="option-text">{{ opcion.choice_label }}</div>
+                    </label>
+                {% endfor %}
+            </div>
+
+            <footer class="lesson-footer {% if resultado == 'correcto' %}state-correct{% elif resultado == 'incorrecto' %}state-incorrect{% endif %}">
+                {% if resultado %}
+                    <div class="feedback-container">
+                        <div class="feedback-icon">
+                            {% if resultado == 'correcto' %}
+                                <i class="fa-solid fa-check"></i>
+                            {% else %}
+                                <i class="fa-solid fa-xmark"></i>
+                            {% endif %}
+                        </div>
+                        <div class="feedback-content">
+                            {% if resultado == 'correcto' %}
+                                <h3>¡Excelente!</h3>
+                            {% else %}
+                                <h3>Casi lo tienes</h3>
+                            {% endif %}
+                            <p>{{ leccion.explicacion }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="footer-actions">
+                    {% if resultado == 'correcto' %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary">Continuar</a>
+                    {% elif resultado == 'incorrecto' %}
+                        <button type="submit" class="btn btn-danger">Reintentar</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary">Comprobar</button>
+                    {% endif %}
+                </div>
+            </footer>
+        </form>
+    </main>
+</body>
+</html>

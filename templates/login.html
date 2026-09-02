@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeaAprende - Iniciar Sesión</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fa-solid fa-puzzle-piece"></i> TeaAprende
+                </div>
+                <h2>Bienvenido de nuevo</h2>
+                <p>Ingresa tus datos para continuar aprendiendo.</p>
+            </div>
+
+            {# Formulario real de Django: método POST + csrf_token obligatorio #}
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        {{ form.usuario }}
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="{{ form.contrasena.id_for_label }}">{{ form.contrasena.label }}</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        {{ form.contrasena }}
+                    </div>
+                </div>
+
+                {% if form.errors %}
+                    <p style="color: var(--color-danger); font-weight: 600;">
+                        Por favor completa ambos campos para continuar.
+                    </p>
+                {% endif %}
+
+                <div class="login-options">
+                    <label class="remember-me">
+                        <input type="checkbox"> Recuérdame
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary login-btn">Ingresar</button>
+            </form>
+
+            <div class="login-footer">
+                <p>Este acceso es solo demostrativo para la evaluación del curso.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
