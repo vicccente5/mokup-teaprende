@@ -27,7 +27,7 @@
                 <div class="input-group">
                     <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-user input-icon"></i>
+                        <i class="fa-solid fa-envelope input-icon"></i>
                         {{ form.usuario }}
                     </div>
                 </div>
@@ -41,9 +41,16 @@
                 </div>
 
                 {% if form.errors %}
-                    <p style="color: var(--color-danger); font-weight: 600;">
-                        Por favor completa ambos campos para continuar.
-                    </p>
+                    <div style="color: var(--color-danger); font-weight: 600; margin-bottom: 15px; font-size: 0.9em;">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
+                        {% endfor %}
+                    </div>
                 {% endif %}
 
                 <div class="login-options">

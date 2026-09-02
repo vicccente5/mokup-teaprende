@@ -3,23 +3,36 @@ from django import forms
 
 
 class LoginForm(forms.Form):
-    """Formulario simple de acceso a la plataforma (sin base de datos de usuarios reales)."""
+    """Formulario de acceso a la plataforma con verificación de datos."""
     
-    # Campo de texto para el nombre de usuario
-    usuario = forms.CharField(
-        label="Usuario", # Etiqueta que se mostrará junto al campo en el HTML
-        max_length=100, # Límite de caracteres
-        # Configuración del widget (la representación HTML del campo)
-        # Permite agregar clases CSS y otros atributos como el 'placeholder' (texto fantasma)
-        widget=forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Tu nombre'})
+    # Utilizamos EmailField para que Django valide automáticamente el formato del correo
+    usuario = forms.EmailField(
+        label="Correo Electrónico",
+        max_length=100,
+        widget=forms.EmailInput(attrs={'class': 'form-input', 'placeholder': 'ejemplo@correo.com'})
     )
     
-    # Campo para la contraseña (aunque no se use en BD en este proyecto, sirve de simulación)
+    # Campo para la contraseña
     contrasena = forms.CharField(
         label="Contraseña",
-        # PasswordInput hace que el texto escrito se oculte con asteriscos (type="password" en HTML)
         widget=forms.PasswordInput(attrs={'class': 'form-input', 'placeholder': '••••••••'})
     )
+
+    def clean_contrasena(self):
+        """Verificación y validación de la contraseña."""
+        contrasena = self.cleaned_data.get('contrasena')
+        # Integración de validación de datos: comprobamos que la contraseña tenga un mínimo de seguridad
+        if contrasena and len(contrasena) < 6:
+            raise forms.ValidationError("La contraseña debe tener al menos 6 caracteres.")
+        return contrasena
+
+    def clean_usuario(self):
+        """Verificación adicional para el correo electrónico (usuario)."""
+        correo = self.cleaned_data.get('usuario')
+        # Se pueden agregar más integraciones aquí (por ejemplo, comprobar si el correo existe en la base de datos)
+        if correo and not correo.endswith(".com") and not correo.endswith(".cl") and not correo.endswith(".net") and not correo.endswith(".org"):
+            raise forms.ValidationError("Por favor, ingresa un dominio de correo válido (.com, .cl, .net, etc).")
+        return correo
 
 
 class RespuestaForm(forms.Form):
