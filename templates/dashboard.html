@@ -1,31 +1,35 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeaAprende - Panel de Aprendizaje</title>
+    <title>TeaAcompañamos - Panel de Aprendizaje</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="dashboard-body">
     <div class="app-layout">
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <i class="fa-solid fa-puzzle-piece"></i> TeaAprende
+                <i class="fa-solid fa-puzzle-piece"></i> TeaAcompañamo
             </div>
 
             <nav class="sidebar-nav">
                 <p class="nav-section-title">MENÚ PRINCIPAL</p>
-                <a href="{% url 'dashboard' %}" class="sidebar-item active"><i class="fa-solid fa-graduation-cap"></i> Mis Módulos</a>
+                <a href="{% url 'dashboard' %}" class="sidebar-item active"><i class="fa-solid fa-graduation-cap"></i>
+                    Mis Módulos</a>
             </nav>
 
             <div class="sidebar-footer">
                 <p class="nav-section-title">CUENTA</p>
-                <a href="{% url 'logout' %}" class="sidebar-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+                <a href="{% url 'logout' %}" class="sidebar-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Cerrar Sesión</a>
             </div>
         </aside>
 
@@ -41,7 +45,8 @@
                         <i class="fa-solid fa-medal"></i> Nivel {{ nivel }}
                     </div>
                     <div class="stat-item user-profile">
-                        <img src="https://ui-avatars.com/api/?name={{ usuario }}&background=009688&color=fff&rounded=true" alt="Perfil" class="profile-pic">
+                        <img src="https://ui-avatars.com/api/?name={{ usuario }}&background=009688&color=fff&rounded=true"
+                            alt="Perfil" class="profile-pic">
                         <span>{{ usuario }}</span>
                     </div>
                 </div>
@@ -53,7 +58,8 @@
                 <div class="progress-banner">
                     <div class="banner-text">
                         <h2>¡Vas por muy buen camino!</h2>
-                        <p>Has completado el {{ progreso_general }}% del programa de certificación en inclusión de TEA.</p>
+                        <p>Has completado el {{ progreso_general }}% del programa de certificación en inclusión de TEA.
+                        </p>
                     </div>
                     <div class="banner-chart">
                         <div class="circular-progress">
@@ -70,45 +76,47 @@
                 <div class="modules-grid">
                     {# Recorremos los módulos que llegan desde la vista (uno por cada fila de la BD) #}
                     {% for modulo in modulos %}
-                        {% with primera_leccion=modulo.lecciones.first %}
-                        {% if modulo.esta_completo %}
-                            <div class="module-card completed">
-                                <div class="module-icon"><i class="fa-solid fa-check"></i></div>
-                                <div class="module-content">
-                                    <h3>Módulo {{ modulo.orden }}: {{ modulo.titulo }}</h3>
-                                    <p>{{ modulo.descripcion }}</p>
-                                    <div class="progress-bar-container mini">
-                                        <div class="progress-bar" style="width: {{ modulo.progreso }}%"></div>
-                                    </div>
-                                </div>
-                                <a href="{% url 'leccion' primera_leccion.id %}" class="module-action-btn btn-secondary">Repasar</a>
+                    {% with primera_leccion=modulo.lecciones.first %}
+                    {% if modulo.esta_completo %}
+                    <div class="module-card completed">
+                        <div class="module-icon"><i class="fa-solid fa-check"></i></div>
+                        <div class="module-content">
+                            <h3>Módulo {{ modulo.orden }}: {{ modulo.titulo }}</h3>
+                            <p>{{ modulo.descripcion }}</p>
+                            <div class="progress-bar-container mini">
+                                <div class="progress-bar" style="width: {{ modulo.progreso }}%"></div>
                             </div>
-                        {% elif modulo.desbloqueado %}
-                            <div class="module-card active">
-                                <div class="module-icon current-icon"><i class="{{ modulo.icono }}"></i></div>
-                                <div class="module-content">
-                                    <h3>Módulo {{ modulo.orden }}: {{ modulo.titulo }}</h3>
-                                    <p>{{ modulo.descripcion }}</p>
-                                    <div class="progress-bar-container mini">
-                                        <div class="progress-bar" style="width: {{ modulo.progreso }}%"></div>
-                                    </div>
-                                </div>
-                                <a href="{% url 'leccion' primera_leccion.id %}" class="module-action-btn btn-primary">Continuar</a>
+                        </div>
+                        <a href="{% url 'leccion' primera_leccion.id %}"
+                            class="module-action-btn btn-secondary">Repasar</a>
+                    </div>
+                    {% elif modulo.desbloqueado %}
+                    <div class="module-card active">
+                        <div class="module-icon current-icon"><i class="{{ modulo.icono }}"></i></div>
+                        <div class="module-content">
+                            <h3>Módulo {{ modulo.orden }}: {{ modulo.titulo }}</h3>
+                            <p>{{ modulo.descripcion }}</p>
+                            <div class="progress-bar-container mini">
+                                <div class="progress-bar" style="width: {{ modulo.progreso }}%"></div>
                             </div>
-                        {% else %}
-                            <div class="module-card locked">
-                                <div class="module-icon"><i class="fa-solid fa-lock"></i></div>
-                                <div class="module-content">
-                                    <h3>Módulo {{ modulo.orden }}: {{ modulo.titulo }}</h3>
-                                    <p>{{ modulo.descripcion }}</p>
-                                    <div class="progress-bar-container mini">
-                                        <div class="progress-bar" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                                <button class="module-action-btn btn-disabled" disabled>Bloqueado</button>
+                        </div>
+                        <a href="{% url 'leccion' primera_leccion.id %}"
+                            class="module-action-btn btn-primary">Continuar</a>
+                    </div>
+                    {% else %}
+                    <div class="module-card locked">
+                        <div class="module-icon"><i class="fa-solid fa-lock"></i></div>
+                        <div class="module-content">
+                            <h3>Módulo {{ modulo.orden }}: {{ modulo.titulo }}</h3>
+                            <p>{{ modulo.descripcion }}</p>
+                            <div class="progress-bar-container mini">
+                                <div class="progress-bar" style="width: 0%"></div>
                             </div>
-                        {% endif %}
-                        {% endwith %}
+                        </div>
+                        <button class="module-action-btn btn-disabled" disabled>Bloqueado</button>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                     {% endfor %}
                 </div>
 
@@ -116,4 +124,5 @@
         </div>
     </div>
 </body>
+
 </html>
