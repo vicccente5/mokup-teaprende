@@ -26,10 +26,10 @@
                 {% csrf_token %}
 
                 <div class="input-group">
-                    <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-user input-icon"></i>
-                        {{ form.usuario }}
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        {{ form.email }}
                     </div>
                 </div>
 
