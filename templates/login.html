@@ -1,33 +1,34 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeaAprende - Iniciar Sesión</title>
+    <title>TeaAcompañamos - Iniciar Sesión</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="login-body">
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
                 <div class="login-logo">
-                    <i class="fa-solid fa-puzzle-piece"></i> TeaAprende
+                    <i class="fa-solid fa-puzzle-piece"></i> TeaAcompañamos
                 </div>
                 <h2>Bienvenido de nuevo</h2>
                 <p>Ingresa tus datos para continuar aprendiendo.</p>
             </div>
 
-            {# Formulario real de Django: método POST + csrf_token obligatorio #}
             <form method="POST">
                 {% csrf_token %}
 
                 <div class="input-group">
                     <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <i class="fa-solid fa-user input-icon"></i>
                         {{ form.usuario }}
                     </div>
                 </div>
@@ -41,16 +42,16 @@
                 </div>
 
                 {% if form.errors %}
-                    <div style="color: var(--color-danger); font-weight: 600; margin-bottom: 15px; font-size: 0.9em;">
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
-                            {% endfor %}
-                        {% endfor %}
-                        {% for error in form.non_field_errors %}
-                            <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
-                        {% endfor %}
-                    </div>
+                <div style="color: var(--color-danger); font-weight: 600; margin-bottom: 15px; font-size: 0.9em;">
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
+                    {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
+                    {% endfor %}
+                </div>
                 {% endif %}
 
                 <div class="login-options">
@@ -62,10 +63,11 @@
                 <button type="submit" class="btn btn-primary login-btn">Ingresar</button>
             </form>
 
-            <div class="login-footer">
-                <p>Este acceso es solo demostrativo para la evaluación del curso.</p>
+            <div class="login-footer" style="margin-top: 1.5rem; text-align: center;">
+                <p>¿No tienes cuenta? <a href="{% url 'registro' %}" style="color: var(--color-primary); font-weight: bold; text-decoration: none;">Regístrate aquí</a></p>
             </div>
         </div>
     </div>
 </body>
-</html>
+
+</html>

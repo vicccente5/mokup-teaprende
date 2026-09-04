@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeaAcompañamos - Registro</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fa-solid fa-puzzle-piece"></i> TeaAcompañamos
+                </div>
+                <h2>Crea tu cuenta</h2>
+                <p>Regístrate para guardar tu progreso real.</p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="input-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <div class="input-wrapper">
+                        {% if 'password' in field.name or 'contrasena' in field.name %}
+                            <i class="fa-solid fa-lock input-icon"></i>
+                        {% else %}
+                            <i class="fa-solid fa-user input-icon"></i>
+                        {% endif %}
+                        {{ field }}
+                    </div>
+                    {% if field.help_text %}
+                        <small style="color: var(--color-gray-dark); font-size: 0.8em; display: block; margin-top: 5px;">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                {% if form.errors %}
+                <div style="color: var(--color-danger); font-weight: 600; margin-bottom: 15px; font-size: 0.9em;">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                        <p><i class="fa-solid fa-circle-exclamation"></i> {{ field.label }}: {{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <p><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary login-btn">Registrarse</button>
+            </form>
+
+            <div class="login-footer" style="margin-top: 1.5rem; text-align: center;">
+                <p>¿Ya tienes cuenta? <a href="{% url 'login' %}" style="color: var(--color-primary); font-weight: bold; text-decoration: none;">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
